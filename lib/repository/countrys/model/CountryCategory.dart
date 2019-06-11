@@ -13,9 +13,8 @@ class CountryCategory {
 
 
   factory CountryCategory.fromJson(dynamic json) {
-    var category = json['category'];
     return CountryCategory(
-        json['flag_image'], json['name'], json['short_description'], json['description1'], json['description2'], category.map<Category>((category) => new Category.fromMap(category))
+        json['flag_image'], json['name'], json['short_description'], json['description1'], json['description2'], json['category'].map<Category>((category) => new Category.fromMap(category))
     .toList());
   }
 

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'ui/Home.dart';
 
+import 'package:meu_primeiro_app/ui/Country.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -10,6 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Flutter News',
+      routes: {
+        Country.routeName: (context) => Country(),
+      },
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),

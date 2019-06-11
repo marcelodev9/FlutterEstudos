@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meu_primeiro_app/repository/countrys/CountryRepository.dart';
 import 'package:meu_primeiro_app/support/conection/api.dart';
 import 'package:meu_primeiro_app/ui/Country.dart';
+import 'package:meu_primeiro_app/repository/countrys/model/CountryDTO.dart';
 
 class Home extends StatefulWidget {
   final state = new _NoticeListPageState();
@@ -68,34 +69,85 @@ class _NoticeListPageState extends State<Home> {
 
   Widget _getListViewWidget() {
     return new Container(
-      margin: new EdgeInsets.only(top: 10, left: 15, right: 15),
-      child: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text(
-            "Escolha seu destino",
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black54,
-                fontSize: 18),
-          ),
-          new Expanded(
-              child: new Container(
-            margin: new EdgeInsets.only(top: 10),
-            child: new ListView.builder(
-                itemCount: _news.length,
-                padding: new EdgeInsets.only(top: 5.0),
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    child: _news[index],
-                    onTap: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Country())),
-                  );
-                }),
-          ))
-        ],
-      ),
-    );
+        margin: new EdgeInsets.only(top: 10, left: 15, right: 15),
+        child: new ListView(children: <Widget>[
+          new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text(
+                  "Escolha seu destino",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black54,
+                      fontSize: 18),
+                ),
+                new Container(
+                  margin: new EdgeInsets.only(top: 10),
+                  child: new ListView.builder(
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      itemCount: _news.length,
+                      padding: new EdgeInsets.only(top: 5.0),
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          child: new Container(
+                            margin:
+                            const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 10.0, top: 15.0),
+                            child: new Material(
+                                child: new Container(
+                                  height: 95.0,
+                                  child: new Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      new Container(
+                                          width: 70.0,
+                                          height: 70.0,
+                                          decoration: new BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: new DecorationImage(
+                                                  fit: BoxFit.fill, image: new NetworkImage(_news[index].img)))),
+                                      new Expanded(
+                                          child: new Container(
+                                            decoration: new BoxDecoration(
+                                                border: Border(
+                                                  bottom: BorderSide(width: .5, color: Colors.black26),
+                                                )),
+                                            margin: new EdgeInsets.only(left: 15),
+                                            child: new Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                new Text(
+                                                  _news[index].name,
+                                                  maxLines: 1,
+                                                  style: new TextStyle(
+                                                      fontSize: 18, fontWeight: FontWeight.bold),
+                                                ),
+                                                new Container(
+                                                  margin: new EdgeInsets.only(top: 5.0),
+                                                  child: new Text(
+                                                    _news[index].description,
+                                                    maxLines: 2,
+                                                    style: new TextStyle(fontSize: 15, color: Colors.black38),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                )),
+                          ),
+                          onTap: () => Navigator.pushNamed(
+                              context,
+                            Country.routeName,
+                            arguments: ScreenArguments(
+                              _news[index].idCountry
+                            ),),
+                        );
+                      }),
+                )
+              ])
+        ]));
   }
 
   _showImplError(onError) {
